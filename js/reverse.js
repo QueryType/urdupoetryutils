@@ -6,106 +6,113 @@ var debug_me = false;
 var debugtarget = '';
 
 function reverser() {
-
-	 var lang = document.myForm.lang.options[document.myForm.lang.selectedIndex].text;
-	 debugtarget = '';
-	 if (lang == 'Hindi' ) {
-		 var alltext = document.myForm.message.value;
-		  var bb1 = '';	
-		  for(i=0; i<alltext.length; i++)
-		  {
-			if (alltext.charAt(i) == '\n' || alltext.charAt(i) == ' ')	{
-				  bb1 += alltext.charAt(i);	
-			} else if(alltext.charCodeAt(i)>127){
-			   var thischar = 	alltext.charCodeAt(i);
-			   if (i!=alltext.length-1 && ((thischar >= 2325 && thischar <= 2361) || (thischar >= 2392 && thischar <= 2399)) ) { //Added for Additional consonants
-				  if (addImplicitA(alltext,i))    {
-					bb1 += writeOutput(alltext,i,true);
-				  }else {
-					bb1 += writeOutput(alltext,i,false);
-				  }
-			   } else {	
-				   bb1 += writeOutput(alltext,i,false);
-			   }
-			} else	{
-			  bb1 += alltext.charAt(i);
+	var lang = document.myForm.lang.options[document.myForm.lang.selectedIndex].text;
+	debugtarget = '';
+	
+	if (lang === 'Hindi') {
+		var alltext = document.myForm.message.value;
+		var bb1 = '';	
+		var i;
+		for (i = 0; i < alltext.length; i++) {
+			if (alltext.charAt(i) === '\n' || alltext.charAt(i) === ' ') {
+				bb1 += alltext.charAt(i);	
+			} else if (alltext.charCodeAt(i) > 127) {
+				var thischar = alltext.charCodeAt(i);
+				if (i !== alltext.length - 1 && ((thischar >= 2325 && thischar <= 2361) || (thischar >= 2392 && thischar <= 2399))) { //Added for Additional consonants
+					if (addImplicitA(alltext, i)) {
+						bb1 += writeOutput(alltext, i, true);
+					} else {
+						bb1 += writeOutput(alltext, i, false);
+					}
+				} else {	
+					bb1 += writeOutput(alltext, i, false);
+				}
+			} else {
+				bb1 += alltext.charAt(i);
 			}
-		  }
-		 document.myForm.decoded.value = bb1;	  
-  	     document.myForm.debug.value = debugtarget;	 
-	 } else {
+		}
+		document.myForm.decoded.value = bb1;	  
+		document.myForm.debug.value = debugtarget;	 
+	} else {
 		alert(lang + ' not implemented');
-	 }
+	}
 }
 
 //defining rules to add implicit 'a' or not
-function addImplicitA(text,index){
-
-	result = false;
+function addImplicitA(text, index) {
+	var result = false;
 
 	//if next is nukta skip ahead
-	if (text.charCodeAt(index+1)== 2364) {
+	if (index + 1 < text.length && text.charCodeAt(index + 1) === 2364) {
 		index++;
 	}
 
-	if (text.charCodeAt(index+1)>= 2325 && text.charCodeAt(index+1) <= 2361)    { // Add if next is Independent vowel
-		result = true;
-	} else if (text.charCodeAt(index+1)>= 2392 && text.charCodeAt(index+1) <= 2399) { //Add if next Additional consonants
-		result = true;
-	} else if (text.charCodeAt(index+1)== 2381) {// Do no add if next is halant - 2381
-		result = false;
+	if (index + 1 < text.length) {
+		var nextChar = text.charCodeAt(index + 1);
+		if (nextChar >= 2325 && nextChar <= 2361) { // Add if next is Independent vowel
+			result = true;
+		} else if (nextChar >= 2392 && nextChar <= 2399) { //Add if next Additional consonants
+			result = true;
+		} else if (nextChar === 2381) { // Do not add if next is halant - 2381
+			result = false;
+		}
 	}
 
 	return result;
 }
 
-function writeOutput(text,index,implicita) {     
-
-	revchar = '';
-	thischar = text.charCodeAt(index);
+function writeOutput(text, index, implicita) {     
+	var revchar = '';
+	var thischar = text.charCodeAt(index);
+	
 	//if next is nukta, get additional consonant
-	if (text.charCodeAt(index+1)== 2364) {		
-		switch (thischar)
-		{
+	if (index + 1 < text.length && text.charCodeAt(index + 1) === 2364) {		
+		switch (thischar) {
 			case 2325: //q
 				revchar = addconso_arr[0];
-			break;
+				break;
 			case 2326: //kh
 				revchar = addconso_arr[1];
-			break;
+				break;
 			case 2327: //gh
 				revchar = addconso_arr[2];
-			break;
+				break;
 			case 2332: //z
 				revchar = addconso_arr[3];
-			break;
+				break;
 			case 2337: //.D
 				revchar = addconso_arr[4];
-			break;
+				break;
 			case 2338: //.Dh
 				revchar = addconso_arr[5];
-			break;
+				break;
 			case 2347: //f
 				revchar = addconso_arr[6];
-			break;
+				break;
 			case 2351: //yy
 				revchar = addconso_arr[7];
-			break;
+				break;
 			default:
-				revchar = devngr_arr[thischar-2305];
+				var arrayIndex = thischar - 2305;
+				if (arrayIndex >= 0 && arrayIndex < devngr_arr.length) {
+					revchar = devngr_arr[arrayIndex];
+				}
 		}
 	} else {
-		revchar = devngr_arr[thischar-2305];
+		var arrayIndex = thischar - 2305;
+		if (arrayIndex >= 0 && arrayIndex < devngr_arr.length) {
+			revchar = devngr_arr[arrayIndex];
+		}
 	}
 	
 	if (implicita) {
 		revchar += "a";
 	}
 
-	 if (debug_me) {
-		debugtarget += text.charAt(index) + '-'  +thischar + '-' + '['+revchar+']';
-	 }
-	 return revchar;
+	if (debug_me) {
+		debugtarget += text.charAt(index) + '-' + thischar + '-' + '[' + revchar + ']';
+	}
+	return revchar;
 }
 
 function writeOutput2(charcode,revchar) {     

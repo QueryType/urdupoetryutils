@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functionality Test - Urdu Poetry Utils</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .test-result { margin: 10px 0; padding: 10px; background-color: #f9f9f9; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        button { padding: 8px 16px; margin: 5px; cursor: pointer; }
+        textarea { width: 100%; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>Urdu Poetry Utils - Functionality Test</h1>
+    
+    <!-- Load all JavaScript files -->
+    <script src="js/utils.js"></script>
+    <script src="js/mt.js"></script>
+    <script src="js/cvAnalyse.js"></script>
+    <script src="js/reverse.js"></script>
+    
+    <div class="test-section">
+        <h2>1. JavaScript Loading Test</h2>
+        <div id="js-test-result" class="test-result"></div>
+        <button onclick="testJavaScriptLoading()">Test JS Loading</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Utility Functions Test</h2>
+        <div id="utils-test-result" class="test-result"></div>
+        <button onclick="testUtilityFunctions()">Test Utilities</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Behr Database Test</h2>
+        <div id="behr-test-result" class="test-result"></div>
+        <button onclick="testBehrDatabase()">Test Behr Database</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Pattern Search Test</h2>
+        <div id="pattern-test-result" class="test-result"></div>
+        <input type="text" id="test-pattern" placeholder="Enter pattern (e.g., 212)" value="212">
+        <button onclick="testPatternSearch()">Test Pattern Search</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>5. CV Analysis Test</h2>
+        <div id="cv-test-result" class="test-result"></div>
+        <textarea id="test-text" rows="3" placeholder="Enter Devanagari text for testing">मुहब्बत में नहीं है फर्क जीने और मरने का</textarea>
+        <button onclick="testCVAnalysis()">Test CV Analysis</button>
+        <div id="cv-analysis-output"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>6. Reverse Transliteration Test</h2>
+        <div id="reverse-test-result" class="test-result"></div>
+        <textarea id="reverse-test-text" rows="3" placeholder="Enter Devanagari text">नमस्ते</textarea>
+        <button onclick="testReverseTransliteration()">Test Reverse Transliteration</button>
+        <div id="reverse-output"></div>
+    </div>
+    
+    <script>
+        function testJavaScriptLoading() {
+            const result = document.getElementById('js-test-result');
+            let tests = [];
+            
+            // Test if all required functions and variables exist
+            tests.push({ name: 'trim function', exists: typeof trim === 'function' });
+            tests.push({ name: 'behrHashMap', exists: typeof behrHashMap === 'object' });
+            tests.push({ name: 'cvV_arr', exists: typeof cvV_arr === 'object' });
+            tests.push({ name: 'devngr_arr', exists: typeof devngr_arr === 'object' });
+            tests.push({ name: 'allanalyze function', exists: typeof allanalyze === 'function' });
+            tests.push({ name: 'reverser function', exists: typeof reverser === 'function' });
+            tests.push({ name: 'Behr class', exists: typeof Behr === 'function' });
+            
+            let html = '<h3>JavaScript Loading Results:</h3>';
+            let allPassed = true;
+            
+            tests.forEach(test => {
+                const status = test.exists ? '✓ PASS' : '✗ FAIL';
+                const className = test.exists ? 'success' : 'error';
+                html += `<div class="${className}">${status}: ${test.name}</div>`;
+                if (!test.exists) allPassed = false;
+            });
+            
+            result.innerHTML = html;
+            result.className = `test-result ${allPassed ? 'success' : 'error'}`;
+        }
+        
+        function testUtilityFunctions() {
+            const result = document.getElementById('utils-test-result');
+            let tests = [];
+            
+            try {
+                // Test trim function
+                tests.push({
+                    name: 'trim("  hello  ")',
+                    expected: 'hello',
+                    actual: trim('  hello  '),
+                    pass: trim('  hello  ') === 'hello'
+                });
+                
+                tests.push({
+                    name: 'ltrim("  hello  ")',
+                    expected: 'hello  ',
+                    actual: ltrim('  hello  '),
+                    pass: ltrim('  hello  ') === 'hello  '
+                });
+                
+                tests.push({
+                    name: 'rtrim("  hello  ")',
+                    expected: '  hello',
+                    actual: rtrim('  hello  '),
+                    pass: rtrim('  hello  ') === '  hello'
+                });
+                
+            } catch (e) {
+                tests.push({
+                    name: 'Utility functions',
+                    expected: 'No errors',
+                    actual: e.message,
+                    pass: false
+                });
+            }
+            
+            let html = '<h3>Utility Functions Results:</h3>';
+            let allPassed = true;
+            
+            tests.forEach(test => {
+                const status = test.pass ? '✓ PASS' : '✗ FAIL';
+                const className = test.pass ? 'success' : 'error';
+                html += `<div class="${className}">${status}: ${test.name} - Expected: "${test.expected}", Got: "${test.actual}"</div>`;
+                if (!test.pass) allPassed = false;
+            });
+            
+            result.innerHTML = html;
+            result.className = `test-result ${allPassed ? 'success' : 'error'}`;
+        }
+        
+        function testBehrDatabase() {
+            const result = document.getElementById('behr-test-result');
+            let tests = [];
+            
+            try {
+                // Test if behrHashMap has data
+                const testBehrs = behrHashMap.getBehrsByCount(7); // Should return some behrs
+                tests.push({
+                    name: 'getBehrsByCount(7)',
+                    expected: 'Array with length > 0',
+                    actual: `Array with length ${testBehrs.length}`,
+                    pass: testBehrs.length > 0
+                });
+                
+                // Test a specific behr
+                if (testBehrs.length > 0) {
+                    const firstBehr = testBehrs[0];
+                    tests.push({
+                        name: 'First behr has name',
+                        expected: 'String',
+                        actual: typeof firstBehr.getName(),
+                        pass: typeof firstBehr.getName() === 'string' && firstBehr.getName().length > 0
+                    });
+                    
+                    tests.push({
+                        name: 'First behr has pattern',
+                        expected: 'String',
+                        actual: typeof firstBehr.getPattern(),
+                        pass: typeof firstBehr.getPattern() === 'string' && firstBehr.getPattern().length > 0
+                    });
+                }
+                
+                // Test pattern search
+                const regexBehrs = behrHashMap.getBehrsByRegPattern('212', 'start');
+                tests.push({
+                    name: 'getBehrsByRegPattern("212", "start")',
+                    expected: 'Array',
+                    actual: `Array with length ${regexBehrs.length}`,
+                    pass: Array.isArray(regexBehrs)
+                });
+                
+            } catch (e) {
+                tests.push({
+                    name: 'Behr database access',
+                    expected: 'No errors',
+                    actual: e.message,
+                    pass: false
+                });
+            }
+            
+            let html = '<h3>Behr Database Results:</h3>';
+            let allPassed = true;
+            
+            tests.forEach(test => {
+                const status = test.pass ? '✓ PASS' : '✗ FAIL';
+                const className = test.pass ? 'success' : 'error';
+                html += `<div class="${className}">${status}: ${test.name} - Expected: ${test.expected}, Got: ${test.actual}</div>`;
+                if (!test.pass) allPassed = false;
+            });
+            
+            result.innerHTML = html;
+            result.className = `test-result ${allPassed ? 'success' : 'error'}`;
+        }
+        
+        function testPatternSearch() {
+            const result = document.getElementById('pattern-test-result');
+            const pattern = document.getElementById('test-pattern').value;
+            
+            if (!pattern) {
+                result.innerHTML = '<div class="error">Please enter a pattern to test</div>';
+                return;
+            }
+            
+            try {
+                // Count syllables in pattern
+                let count = 0;
+                for (let i = 0; i < pattern.length; i++) {
+                    if (pattern.charAt(i) === '1' || pattern.charAt(i) === '2' || pattern.charAt(i) === 'x' || pattern.charAt(i) === 'X') {
+                        count++;
+                    }
+                }
+                
+                const behrs = behrHashMap.getBehrsByCount(count);
+                const exactMatches = behrs.filter(behr => {
+                    const plainPattern = behr.getPattern().replace(/-/g, '');
+                    return plainPattern === pattern.replace(/[xX]/g, '[12]');
+                });
+                
+                const startsWithMatches = behrHashMap.getBehrsByRegPattern(pattern.replace(/[xX]/g, '[12]'), 'start');
+                
+                let html = `<h3>Pattern Search Results for "${pattern}":</h3>`;
+                html += `<div class="success">✓ Pattern has ${count} syllables</div>`;
+                html += `<div class="success">✓ Found ${behrs.length} behrs with ${count} syllables</div>`;
+                html += `<div class="success">✓ Found ${startsWithMatches.length} behrs starting with pattern</div>`;
+                
+                if (startsWithMatches.length > 0) {
+                    html += '<h4>Sample matches:</h4>';
+                    startsWithMatches.slice(0, 3).forEach(behr => {
+                        html += `<div>• ${behr.getName()} - ${behr.getPattern()}</div>`;
+                    });
+                }
+                
+                result.innerHTML = html;
+                result.className = 'test-result success';
+                
+            } catch (e) {
+                result.innerHTML = `<div class="error">Error testing pattern: ${e.message}</div>`;
+                result.className = 'test-result error';
+            }
+        }
+        
+        function testCVAnalysis() {
+            const result = document.getElementById('cv-test-result');
+            const output = document.getElementById('cv-analysis-output');
+            const testText = document.getElementById('test-text').value;
+            
+            if (!testText) {
+                result.innerHTML = '<div class="error">Please enter some text to test</div>';
+                return;
+            }
+            
+            try {
+                // Create a mock form for testing
+                const mockForm = {
+                    message: { value: testText }
+                };
+                
+                // Temporarily replace document.mtForm
+                const originalForm = window.document.mtForm;
+                window.document.mtForm = mockForm;
+                
+                // Create a mock result element
+                const mockResult = document.createElement('div');
+                mockResult.id = 'result';
+                output.appendChild(mockResult);
+                
+                // Test CV analysis
+                allanalyze();
+                
+                // Restore original form
+                window.document.mtForm = originalForm;
+                
+                result.innerHTML = '<div class="success">✓ CV Analysis completed successfully</div>';
+                result.className = 'test-result success';
+                
+            } catch (e) {
+                result.innerHTML = `<div class="error">Error in CV analysis: ${e.message}</div>`;
+                result.className = 'test-result error';
+            }
+        }
+        
+        function testReverseTransliteration() {
+            const result = document.getElementById('reverse-test-result');
+            const output = document.getElementById('reverse-output');
+            const testText = document.getElementById('reverse-test-text').value;
+            
+            if (!testText) {
+                result.innerHTML = '<div class="error">Please enter some text to test</div>';
+                return;
+            }
+            
+            try {
+                // Create mock form elements
+                const mockForm = {
+                    lang: {
+                        options: [{ text: 'Hindi' }],
+                        selectedIndex: 0
+                    },
+                    message: { value: testText },
+                    decoded: { value: '' },
+                    debug: { value: '' }
+                };
+                
+                // Temporarily replace document.myForm
+                const originalForm = window.document.myForm;
+                window.document.myForm = mockForm;
+                
+                // Test reverse transliteration
+                reverser();
+                
+                // Display results
+                output.innerHTML = `
+                    <h4>Transliteration Result:</h4>
+                    <div><strong>Input:</strong> ${testText}</div>
+                    <div><strong>Output:</strong> ${mockForm.decoded.value}</div>
+                `;
+                
+                // Restore original form
+                window.document.myForm = originalForm;
+                
+                result.innerHTML = '<div class="success">✓ Reverse transliteration completed successfully</div>';
+                result.className = 'test-result success';
+                
+            } catch (e) {
+                result.innerHTML = `<div class="error">Error in reverse transliteration: ${e.message}</div>`;
+                result.className = 'test-result error';
+            }
+        }
+        
+        // Run initial test on page load
+        window.onload = function() {
+            testJavaScriptLoading();
+        };
+    </script>
+</body>
+</html>

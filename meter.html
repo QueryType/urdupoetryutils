@@ -1,8 +1,24 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- saved from url=(0045)http://urdupoetryutils.appspot.com/gc/mt.html -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<title> Meter </title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urdu Meter Analysis</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 20px; }
+      table { border-collapse: collapse; margin: 10px 0; }
+      td { padding: 8px; border: 1px solid #ddd; }
+      textarea { font-family: Arial, sans-serif; }
+      input[type="button"], input[type="reset"] { 
+        padding: 8px 16px; margin: 5px; 
+        background-color: #f0f0f0; border: 1px solid #ccc; 
+        cursor: pointer; 
+      }
+      input[type="button"]:hover, input[type="reset"]:hover { 
+        background-color: #e0e0e0; 
+      }
+      #result { margin-top: 20px; }
+    </style>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="./js/utils.js"></script>
 <script type="text/javascript" src="./js/mt.js"></script>
@@ -45,19 +61,29 @@
 
 <script type="text/javascript">
 	function findbehr() {
-
 		var tgt_text = document.getElementById("result");
+		if (!tgt_text) {
+			alert("Result element not found");
+			return;
+		}
+		
 		tgt_text.innerHTML = "Searching... Please wait ";
 		
-		var in_pattern = trim(document.mtForm.inp_pattern.value,'');
+		var patternInput = document.mtForm.inp_pattern;
+		if (!patternInput || !patternInput.value.trim()) {
+			tgt_text.innerHTML = "Please enter a syllable pattern to search.";
+			return;
+		}
+		
+		var in_pattern = trim(patternInput.value, '');
 		var count = 0;
 		var reg_pattern = "";
-		for(i=0; i<in_pattern.length;i++) {
-
-			if (in_pattern.charAt(i) == 'x' || in_pattern.charAt(i) == 'X') {
+		var i;
+		for (i = 0; i < in_pattern.length; i++) {
+			if (in_pattern.charAt(i) === 'x' || in_pattern.charAt(i) === 'X') {
 				reg_pattern += "[12]";
 				count++;
-			} else if (in_pattern.charAt(i) != '1' && in_pattern.charAt(i) != '2') {
+			} else if (in_pattern.charAt(i) !== '1' && in_pattern.charAt(i) !== '2') {
 				tgt_text.innerHTML = "Incorrect Input (valid is 21x2x.....)";		
 				return;
 			} else {
@@ -67,18 +93,17 @@
 		}
 
 		var choice = document.mtForm.mode.options[document.mtForm.mode.selectedIndex].text;
-		if (choice == 'Exact')	{
+		if (choice === 'Exact') {
 			var behr_arrs = behrHashMap.getBehrsByCount(count);
 
 			if (behr_arrs && behr_arrs.length > 0) {
 				tgt_text.innerHTML = "Found " + count + " syllable beher(s), checking pattern... " + reg_pattern + "<br/>";
 
-				for(i=0; i<behr_arrs.length; i++)  {
+				for (i = 0; i < behr_arrs.length; i++) {
 					var behr = behr_arrs[i];
-					if (behr.isRegMatch(reg_pattern))	{							
+					if (behr.isRegMatch(reg_pattern)) {							
 						tgt_text.innerHTML += "<b>" + behr.getName() + "</b>" + " -- Pattern: " + "<b>" + behr.getPattern() + "</b>" + " -- Arkaan Pattern: " + "<b>" + behr.getArkaanPattern() + "</b><br>";							
 					}
-					behr = null;
 				}
 			}else {
 				tgt_text.innerHTML = "Could not find any matching behr<br>";
@@ -95,7 +120,7 @@
 					tgt_text.innerHTML += "<b>" + behr.getName() + "</b>" + " -- Pattern: " + "<b>" + pattern_color_arr[0] + "</b> # of mismatches <b>" + pattern_color_arr[1] +"</b><br>";						
 				}
 			}
-		} else if (choice == 'Starts With')	{
+		} else if (choice === 'Starts With') {
 			
 			tgt_text.innerHTML = "Searching... Please wait ";
 			var behr_arrs = behrHashMap.getBehrsByRegPattern(reg_pattern,'start');
@@ -175,7 +200,7 @@
 				<td width="65%">
 					<table>
 					<tbody><tr>
-						<td colspan="2">Enter ghazal in devanagari unicode to get CV constructs <div id="translControl"><div class="inputapi-inline-block inputapi-transliterate-button inputapi-transliterate-button-checked" title="" role="button" tabindex="0" style="-webkit-user-select: none;"><div class="inputapi-inline-block inputapi-transliterate-button-outer-box"><div class="inputapi-inline-block inputapi-transliterate-button-inner-box"><div class="inputapi-inline-block inputapi-transliterate-img inputapi-transliterate-img-button-hi" style="width: 18px; height: 18px;"></div></div></div></div></div></td>
+						<td colspan="2">Enter ghazal in devanagari unicode to get CV constructs <div id="translControl"></div></td>
 					</tr>
 					<tr>
 						<td colspan="2"><textarea name="message" rows="8" cols="70" id="src" style="line-height: 1.5em; font-family: Arial, Helvetica, sans-serif; font-size: 14px;"></textarea></td>

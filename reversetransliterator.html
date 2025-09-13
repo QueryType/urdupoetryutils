@@ -1,7 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<!-- saved from url=(0059)http://urdupoetryutils.appspot.com/gc/reverse_translit.html -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-  <title> Unicode Reverse Transliterator </title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unicode Reverse Transliterator</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 20px; }
+      textarea { font-family: Arial, sans-serif; margin: 5px 0; }
+      input[type="button"], input[type="reset"] { 
+        padding: 8px 16px; margin: 5px; 
+        background-color: #f0f0f0; border: 1px solid #ccc; 
+        cursor: pointer; 
+      }
+      input[type="button"]:hover, input[type="reset"]:hover { 
+        background-color: #e0e0e0; 
+      }
+      select { padding: 4px; margin: 5px; }
+      label { font-weight: bold; }
+    </style>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="./js/reverse.js"></script><style type="text/css"></style>
 
@@ -44,14 +60,13 @@
 
 <form name="myForm" method="GET">
 
-<font size="1" face="Verdana">Select Language
-<select name="lang">
-	<option value="hindi" selected="">Hindi</option>
+<label for="lang" style="font-family: Verdana; font-size: small;">Select Language:</label>
+<select name="lang" id="lang">
+	<option value="hindi" selected>Hindi</option>
 	<option value="Telugu">Telugu</option>
 </select>
 <br>
-Type in roman English to get Hindi
-</font>
+<span style="font-family: Verdana; font-size: small;">Type in roman English to get Hindi</span>
 <br>
 <textarea name="message" rows="5" cols="75" id="src" autocomplete="off" style="line-height: 1.5em; font-family: Arial, Helvetica, sans-serif; font-size: 14px;"></textarea>
 <br>
@@ -65,5 +80,4 @@ Type in roman English to get Hindi
 
 </form>
 
-<div class="inputapi-popupeditor inputapi-popupeditor-vertical" role="menu" aria-haspopup="true" tabindex="-1" style="-webkit-user-select: none; display: none;"><table style="-webkit-user-select: none;"><tbody style="-webkit-user-select: none;"><tr style="-webkit-user-select: none;"><td style="-webkit-user-select: none;"><table style="width: 100%; -webkit-user-select: none;"><tbody style="-webkit-user-select: none;"><tr style="-webkit-user-select: none;"><td style="width: 100%; -webkit-user-select: none;"><div class="inputapi-popupeditor-input"><span class="inputapi-popupeditor-cursor"></span></div></td><td width="63px" style="-webkit-user-select: none;"><div class="inputapi-popupeditor-logo" style="-webkit-user-select: none;"></div></td></tr></tbody></table><table style="width: 100%; -webkit-user-select: none;"><tbody style="-webkit-user-select: none;"><tr style="-webkit-user-select: none;"><td style="width: 100%; -webkit-user-select: none;"><div class="inputapi-popupeditor-content" style="-webkit-user-select: none;"></div></td><td width="54px" style="-webkit-user-select: none;"><div class="inputapi-popupeditor-nav inputapi-popupeditor-nav-horizontal" tabindex="-1" style="-webkit-user-select: none; display: none;"><div class="inputapi-inline-block inputapi-custom-button inputapi-custom-button-disabled" title="" role="button" aria-disabled="true" style="-webkit-user-select: none;" id=":0"><div class="inputapi-inline-block inputapi-custom-button-outer-box" style="-webkit-user-select: none;"><div class="inputapi-inline-block inputapi-custom-button-inner-box" style="-webkit-user-select: none;"><div class="inputapi-popupeditor-pageup inputapi-popupeditor-navbutton" style="-webkit-user-select: none;"></div></div></div></div><div class="inputapi-inline-block inputapi-custom-button" title="" role="button" style="-webkit-user-select: none;" id=":1"><div class="inputapi-inline-block inputapi-custom-button-outer-box" style="-webkit-user-select: none;"><div class="inputapi-inline-block inputapi-custom-button-inner-box" style="-webkit-user-select: none;"><div class="inputapi-popupeditor-pagedown inputapi-popupeditor-navbutton" style="-webkit-user-select: none;"></div></div></div></div></div></td></tr></tbody></table></td></tr></tbody></table></div><div class="inputapi-multisegmentpopupeditor inputapi-multisegmentpopupeditor-vertical" role="menu" aria-haspopup="true" tabindex="-1" style="-webkit-user-select: none; display: none;"><table style="-webkit-user-select: none;"><tbody style="-webkit-user-select: none;"><tr style="-webkit-user-select: none;"><td style="-webkit-user-select: none;"><div class="inputapi-multisegmentpopupeditor-input" contenteditable="true" tabindex="-1"></div><div class="inputapi-multisegmentpopupeditor-content" style="-webkit-user-select: none;"></div><div class="inputapi-multisegmentpopupeditor-footer" style="-webkit-user-select: none;"><div class="inputapi-multisegmentpopupeditor-logo" style="-webkit-user-select: none;"></div><div class="inputapi-multisegmentpopupeditor-indicator" style="-webkit-user-select: none;"></div><div class="inputapi-multisegmentpopupeditor-footer-end" style="-webkit-user-select: none;"></div></div></td></tr></tbody></table></div><iframe frameborder="0" scrolling="no" style="border: 0px; display: none; background-color: transparent;"></iframe><div id="GOOGLE_INPUT_CHEXT_FLAG" input="" input_stat="{&quot;tlang&quot;:true,&quot;tsbc&quot;:true,&quot;pun&quot;:true,&quot;mk&quot;:false,&quot;ss&quot;:true}" style="display: none;"></div><pre id="_h#3" style="line-height: 21px; font-family: Arial; font-size: 14px; white-space: pre-wrap; word-wrap: break-word; font-weight: normal; font-style: normal; text-transform: none; text-decoration: none; letter-spacing: normal; word-spacing: 0px; direction: ltr; text-align: start; vertical-align: baseline; margin: 0px; border: 1px solid red; padding: 2px; visibility: hidden; overflow: auto; width: 543px; height: 111px; left: 8px; top: 38px; position: absolute; z-index: -9;">&#2351;&#2375; &#2325;&#2367;&#2360;&#2325;&#2366; &#2340;&#2360;&#2381;&#2360;&#2357;&#2381;&#2357;&#2369;&#2352; &#2361;&#2376; &#2351;&#2375; &#2325;&#2367;&#2360;&#2325;&#2366; &#2347;&#2364;&#2360;&#2366;&#2344;&#2366; &#2361;&#2376; 
-&#2332;&#2379; &#2309;&#2358;&#2381;&#2325;&#2364; &#2361;&#2376;&#2306; &#2310;&#2326;&#2379;&#2306; &#2350;&#2375;&#2306; &#2340;&#2360;&#2381;&#2348;&#2368;&#2361; &#2325;&#2366; <span>daana</span></pre><div class="inputapi-transliterate-indic-suggestion-menu inputapi-transliterate-indic-suggestion-menu-vertical" role="menu" aria-haspopup="true" tabindex="-1" style="-webkit-user-select: none; direction: ltr; line-height: 1.5; font-size: 14px; visibility: visible; left: 170.877426147461px; top: 80px; display: none;" aria-activedescendant=""><div class="inputapi-transliterate-indic-suggestion-menuitem" role="menuitem" style="-webkit-user-select: none;" id=":f"><div class="inputapi-transliterate-indic-suggestion-menuitem-content">&#2342;&#2366;&#2344;</div></div><div class="inputapi-transliterate-indic-suggestion-menuitem" role="menuitem" style="-webkit-user-select: none;" id=":g"><div class="inputapi-transliterate-indic-suggestion-menuitem-content">&#2342;&#2366;&#2344;&#2366;</div></div><div class="inputapi-transliterate-indic-suggestion-menuitem" role="menuitem" style="-webkit-user-select: none;" id=":h"><div class="inputapi-transliterate-indic-suggestion-menuitem-content">&#2342;&#2366;&#2344;&#2375;</div></div><div class="inputapi-transliterate-indic-suggestion-menuitem" role="menuitem" style="-webkit-user-select: none;" id=":i"><div class="inputapi-transliterate-indic-suggestion-menuitem-content">&#2337;&#2366;&#2344;&#2366;</div></div><div class="inputapi-transliterate-indic-suggestion-menuitem" role="menuitem" style="-webkit-user-select: none;" id=":j"><div class="inputapi-transliterate-indic-suggestion-menuitem-content">&#2342;&#2366;&#2339;&#2366;</div></div><div class="inputapi-transliterate-indic-suggestion-menuitem" role="menuitem" style="-webkit-user-select: none; direction: ltr;" id=":k"><div class="inputapi-transliterate-indic-suggestion-menuitem-content">daana</div></div></div></body></html>
+</body></html>

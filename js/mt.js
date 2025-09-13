@@ -8,11 +8,12 @@ function Behr(pattern,name) {
 	this._syllable_count=0;
 	//added code to determine arkan pattern
 	var arkaan = "";
-	for(i=0; i<pattern.length;i++) {
-		if (pattern.charAt(i) != '-') {
+	var i;
+	for (i = 0; i < pattern.length; i++) {
+		if (pattern.charAt(i) !== '-') {
 			arkaan += pattern.charAt(i);
 			this._syllable_count++;
-		}else {
+		} else {
 			this._arkaanpattern += getArkaan(arkaan);			
 			arkaan = "";
 		}
@@ -49,11 +50,11 @@ Behr.prototype.isMatch = function(pattern) {
 }
 
 Behr.prototype.isRegMatch = function(pattern) {
-	var matchme = new RegExp(pattern)
-	var plain_pattern ="";
-	var k=0;
-	for(k=0; k<this._pattern.length;k++) {
-		if (this._pattern.charAt(k) != '-') {
+	var matchme = new RegExp(pattern);
+	var plain_pattern = "";
+	var k = 0;
+	for (k = 0; k < this._pattern.length; k++) {
+		if (this._pattern.charAt(k) !== '-') {
 			plain_pattern += this._pattern.charAt(k);
 		}
 	}
@@ -101,11 +102,11 @@ function BehrHashMap() {
 BehrHashMap.prototype._behr_map_list;
 
 //operations
-BehrHashMap.prototype.add = function(count,behr) {
-    var i=0;
-	for(i=0;i<this._behr_map_list.length;i++) {
+BehrHashMap.prototype.add = function(count, behr) {
+	var i = 0;
+	for (i = 0; i < this._behr_map_list.length; i++) {
 		var behrMap = this._behr_map_list[i];
-		if (behrMap.getSyllableCount() == count)	{
+		if (behrMap.getSyllableCount() === count) {
 			behrMap.addBehr(behr);
 			this._behr_map_list[i] = behrMap;
 			break;
@@ -113,12 +114,11 @@ BehrHashMap.prototype.add = function(count,behr) {
 	}
 
 	//if count of syllables does not exist create a new
-	if (i == this._behr_map_list.length) {
-		 var behrMap = new BehrMap(count);
-		 behrMap.addBehr(behr);
-		 this._behr_map_list[i] = behrMap;
+	if (i === this._behr_map_list.length) {
+		var behrMap = new BehrMap(count);
+		behrMap.addBehr(behr);
+		this._behr_map_list[i] = behrMap;
 	}
-
 }
 
 BehrHashMap.prototype.getBehrsByCount = function(count) {
